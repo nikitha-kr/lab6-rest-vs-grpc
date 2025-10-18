@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+// Define the service for all four methods
+service Lab6 {
+    // 1. ADD: Lightweight call
+    rpc Add (AddMsg) returns (AddReply);
+
+    // 2. RAW IMAGE: Send binary image data directly (gRPC preferred)
+    rpc GetRawImageInfo (RawImageMsg) returns (ImageReply);
+
+    // 3. DOT PRODUCT: Send two vectors (repeated floats)
+    rpc DotProduct (DotProductMsg) returns (DotProductReply);
+
+    // 4. JSON IMAGE: Send Base64 encoded string (for comparison to REST)
+    rpc GetJsonImageInfo (JsonImageMsg) returns (ImageReply);
+}
+
+// --- Request Messages ---
+
+message AddMsg {
+    int32 a = 1;
+    int32 b = 2;
+}
+
+message RawImageMsg {
+    // 'bytes' type is efficient for binary data in Protobuf
+    bytes img = 1;
+}
+
+message DotProductMsg {
+    // 'repeated float' is used for a list/vector of numbers
+    repeated float a = 1;
+    repeated float b = 2;
+}
+
+message JsonImageMsg {
+    // Use 'string' to transmit the Base64 encoded data
+    string img = 1;
+}
+
+// --- Response Messages ---
+
+message AddReply {
+    int32 sum = 1;
+}
+
+message DotProductReply {
+    float dotproduct = 1;
+}
+
+message ImageReply {
+    int32 width = 1;
+    int32 height = 2;
+}
